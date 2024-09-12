@@ -1,30 +1,38 @@
-object frmCategoria: TfrmCategoria
-  Left = 427
-  Height = 585
-  Top = 185
-  Width = 1012
+object frmUnidadeMedida: TfrmUnidadeMedida
+  Left = 804
+  Height = 584
+  Top = 271
+  Width = 1007
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Categorias'
-  ClientHeight = 585
-  ClientWidth = 1012
+  Caption = 'Unidades de Medida'
+  ClientHeight = 584
+  ClientWidth = 1007
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '3.4.0.0'
   object grdDados: TDBGrid
-    Left = 8
+    Left = 7
     Height = 336
     Top = 48
     Width = 1000
     Color = clWindow
     Columns = <    
       item
-        Title.Caption = 'Categoria'
-        Width = 830
-        FieldName = 'categoriaDescr'
+        Title.Caption = 'Unidade de Medida'
+        Width = 680
+        FieldName = 'nomeUnidadeMedida'
       end    
       item
+        Title.Alignment = taCenter
+        Title.Caption = 'Sigla'
+        Width = 150
+        FieldName = 'siglaUnidadeMedida'
+      end    
+      item
+        Alignment = taCenter
+        Title.Alignment = taCenter
         Title.Caption = 'Cadastro'
         Width = 120
         FieldName = 'dtCadastro'
@@ -40,15 +48,15 @@ object frmCategoria: TfrmCategoria
     Width = 117
     Caption = 'Data do Cadastro'
   end
-  object lblCategoria: TLabel
+  object lblUnidadeMedida: TLabel
     Left = 16
     Height = 18
     Top = 448
-    Width = 66
-    Caption = 'Categoria'
+    Width = 130
+    Caption = 'Unidade de Medida'
   end
   object edtDtCadastro: TMaskEdit
-    Left = 144
+    Left = 152
     Height = 35
     Top = 400
     Width = 96
@@ -59,22 +67,22 @@ object frmCategoria: TfrmCategoria
     Text = '  /  /    '
     SpaceChar = '_'
   end
-  object edtCategoria: TEdit
-    Left = 144
+  object edtUnidadeMedida: TEdit
+    Left = 152
     Height = 35
     Top = 440
-    Width = 720
+    Width = 584
     TabOrder = 2
   end
   object pnlBotoes: TPanel
     Left = 0
     Height = 74
-    Top = 511
-    Width = 1012
+    Top = 510
+    Width = 1007
     Align = alBottom
     ClientHeight = 74
-    ClientWidth = 1012
-    TabOrder = 3
+    ClientWidth = 1007
+    TabOrder = 4
     object btnNovo: TBitBtn
       Left = 1
       Height = 72
@@ -791,7 +799,7 @@ object frmCategoria: TfrmCategoria
       TabOrder = 4
     end
     object btnSair: TBitBtn
-      Left = 908
+      Left = 903
       Height = 72
       Top = 1
       Width = 103
@@ -934,21 +942,37 @@ object frmCategoria: TfrmCategoria
       TabOrder = 5
     end
   end
+  object lblSigla: TLabel
+    Left = 760
+    Height = 18
+    Top = 448
+    Width = 32
+    Caption = 'Sigla'
+  end
+  object edtSigla: TEdit
+    Left = 800
+    Height = 35
+    Top = 440
+    Width = 168
+    TabOrder = 3
+  end
   object qryListar: TZQuery
     Connection = DM.Conn
     SQL.Strings = (
-      'SELECT idCategoria, categoriaDescr '
-      'FROM estoque.Categorias            '
-      ' order BY categoriaDescr           '
+      'SELECT uni.idUnidadeMedida,'
+      '                 uni.nomeUnidadeMedida,'
+      '                 uni.siglaUnidadeMedida,'
+      '                 uni.dtCadastro'
+      'FROM estoque.unidadeMedida uni'
+      'ORDER BY nomeUnidadeMedida'
     )
     Params = <>
-    Left = 680
-    Top = 192
+    Left = 708
+    Top = 220
   end
   object dsListar: TDataSource
     DataSet = qryListar
-    OnDataChange = dsListarDataChange
-    Left = 800
-    Top = 192
+    Left = 828
+    Top = 220
   end
 end

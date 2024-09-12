@@ -15,6 +15,8 @@ type
     Conn: TZConnection;
     Trans: TZTransaction;
     procedure ConnAfterConnect(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
   private
 
   public
@@ -33,6 +35,16 @@ implementation
 procedure TDM.ConnAfterConnect(Sender: TObject);
 begin
 
+end;
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+begin
+  Conn.Connected := true;
+end;
+
+procedure TDM.DataModuleDestroy(Sender: TObject);
+begin
+    Conn.Connected := false;
 end;
 
 end.

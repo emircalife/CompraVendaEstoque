@@ -11,9 +11,9 @@ uses
   {$ENDIF}
   SysUtils,
   Interfaces, // this includes the LCL widgetset
-  Forms, zcomponent,
-  uPrincipal, uDM
-  { you can add units after this };
+  Forms, zcomponent, rxnew, uPrincipal, uDM, uSubcategoria, uUnidadeMedida,
+  uFormaPagamento, uUsuario, uEmpresa, uFornecedor, uCliente, uLogin, uCompra,
+  uProduto, uVenda;
 
 {$R *.res}
 
@@ -22,8 +22,8 @@ begin
   Application.Scaled:=True;
   DateSeparator := '/';
   Application.Initialize;
-  Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TDM, DM);
+  Application.CreateForm(TfrmLogin, frmLogin);
   Application.Run;
 end.
 

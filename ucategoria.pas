@@ -44,6 +44,7 @@ type
     procedure Alterar;
     procedure Excluir;
     procedure GetDadosTabela;
+    procedure getId;
   public
 
   end;
@@ -64,10 +65,9 @@ end;
 
 procedure TfrmCategoria.dsListarDataChange(Sender: TObject; Field: TField);
 begin
-  GetDadosTabela;
 end;
 
-procedure TfrmCategoria.FormCreate(Sender: TObject);
+procedure TfrmCategoria.FormCreate(Sender: TObject);                                        
 begin
 
 end;
@@ -75,6 +75,9 @@ end;
 procedure TfrmCategoria.FormShow(Sender: TObject);
 begin
   ListarTodos;
+
+  uUtils.limpaCampos(self);
+
   cOperacao := 'C';
 end;
 
@@ -95,7 +98,7 @@ end;
 procedure TfrmCategoria.btnDesfazerClick(Sender: TObject);
 begin
   uUtils.limpaCampos(self);
-
+  cOperacao          := 'C';
   edtDtCadastro.Text := '';
   Caption            := 'Categorias';
 end;
@@ -104,10 +107,13 @@ procedure TfrmCategoria.btnAlterarClick(Sender: TObject);
 begin
   cOperacao   := 'A';
   Caption     := 'Alteração de Categoria';
+
+  GetDadosTabela;
 end;
 
 procedure TfrmCategoria.btnExcluirClick(Sender: TObject);
 begin
+  getId;
   Excluir;
 end;
 
@@ -128,7 +134,7 @@ const
   cSQLConsultar : String = 'SELECT idCategoria, categoriaDescr,          '+
                            '       DATE_FORMAT(dtCadastro, ''%d/%m/%Y'') '+
                            '             as dtCadastro                   '+
-                           ' FROM estoque.Categorias                     '+
+                           ' FROM estoque.categorias                     '+
                            ' order BY categoriaDescr                     ';
 begin
   try
@@ -140,23 +146,32 @@ begin
   end;
 end;
 
+procedure TfrmCategoria.getId;
+begin
+  if (qryListar.State <> dsInactive) and (qryListar.RecordCount >= 1) then
+  begin
+    idCategoria        := qryListar.FieldByName('idCategoria').AsInteger;
+  end;
+end;
+
 procedure TfrmCategoria.GetDadosTabela;
 begin
   if (qryListar.State <> dsInactive) and (qryListar.RecordCount >= 1) then
   begin
     idCategoria        := qryListar.FieldByName('idCategoria').AsInteger;
     edtDtCadastro.Text := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
+
     edtCategoria.Text  := trim(qryListar.FieldByName('categoriaDescr').AsString);
   end;
 end;
 
 procedure TfrmCategoria.Incluir;
 const
-  cSQLIncluir : String = 'INSERT INTO estoque.Categorias (  '+
-                         ' categoriaDescr, dtCadastro       '+
-                         ' ) VALUES (                       '+
-                         ' :PcategoriaDescr, :PdtCadastro   '+
-                         ' )                                ';
+  cSQLManutencao : String = 'INSERT INTO estoque.categorias (  '+
+                            ' categoriaDescr, dtCadastro       '+
+                            ' ) VALUES (                       '+
+                            ' :PcategoriaDescr, :PdtCadastro   '+
+                            ' )                                ';
 
 var
   QryManutencao : TZQuery;
@@ -164,7 +179,7 @@ begin
   try
     QryManutencao:=TZQuery.Create(nil);
     QryManutencao.Connection := DM.Conn;
-    QryManutencao.SQL.Add(cSQLIncluir);
+    QryManutencao.SQL.Add(cSQLManutencao);
     QryManutencao.ParamByName('PcategoriaDescr').AsString := trim(edtCategoria.Text);
     QryManutencao.ParamByName('PdtCadastro').AsDateTime   := now;
     QryManutencao.ExecSQL;
@@ -181,10 +196,10 @@ end;
 
 procedure TfrmCategoria.Alterar;
 const
-  cSQLAlterar : String = 'UPDATE estoque.Categorias SET     '+
-                         ' categoriaDescr =:PcategoriaDescr '+
-                         ' WHERE                            '+
-                         ' idCategoria =:PidCategoria       ';
+  cSQLManutencao : String = 'UPDATE estoque.categorias SET     '+
+                            ' categoriaDescr =:PcategoriaDescr '+
+                            ' WHERE                            '+
+                            ' idCategoria =:PidCategoria       ';
 
 var
   QryManutencao : TZQuery;
@@ -192,7 +207,7 @@ begin
   try
     QryManutencao:=TZQuery.Create(nil);
     QryManutencao.Connection := DM.Conn;
-    QryManutencao.SQL.Add(cSQLAlterar);
+    QryManutencao.SQL.Add(cSQLManutencao);
     QryManutencao.ParamByName('PcategoriaDescr').AsString := trim(edtCategoria.Text);
     QryManutencao.ParamByName('PidCategoria').AsInteger   := idCategoria;
     QryManutencao.ExecSQL;
@@ -209,9 +224,9 @@ end;
 
 procedure TfrmCategoria.Excluir;
 const
-  cSQLExcluir : String = 'DELETE FROM estoque.Categorias    '+
-                         ' WHERE                            '+
-                         ' idCategoria =:PidCategoria       ';
+  cSQLManutencao : String = 'DELETE FROM estoque.categorias    '+
+                            ' WHERE                            '+
+                            ' idCategoria =:PidCategoria       ';
 
 var
   QryManutencao : TZQuery;
@@ -220,10 +235,22 @@ begin
        UpperCase(trim(qryListar.FieldByName('categoriaDescr').AsString)) + '?',
        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   begin
+    if uUtils.isCategoriaComSubcategoria(qryListar.FieldByName('idCategoria').AsInteger) then
+    begin
+      MessageDlg('Há categoria(s) cadastrada(s) com essa subcategoria, '+
+                 'portanto não pode ser excluída.', mtError, [mbOk], 0);
+      Exit;
+    end
+    else if isCategoriaOuSubcategoriaComProduto(qryListar.FieldByName('idCategoria').AsInteger, 0) then
+    begin
+      MessageDlg('Há produto(s) cadastrado(s) com essa categoria, '+
+                       'portanto não pode ser excluída.', mtError, [mbOk], 0);
+      Exit;
+    end;
     try
       QryManutencao:=TZQuery.Create(nil);
       QryManutencao.Connection := DM.Conn;
-      QryManutencao.SQL.Add(cSQLExcluir);
+      QryManutencao.SQL.Add(cSQLManutencao);
       QryManutencao.ParamByName('PidCategoria').AsInteger := idCategoria;;
       QryManutencao.ExecSQL;
 
@@ -236,7 +263,7 @@ begin
 
     FreeAndNil(QryManutencao);
   end;
-
 end;
+
 end.
 

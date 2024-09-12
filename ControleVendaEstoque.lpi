@@ -26,6 +26,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="rxnew"/>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
       </Item>
       <Item>
@@ -72,6 +75,93 @@
         <Filename Value="uutils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uUtils"/>
+      </Unit>
+      <Unit>
+        <Filename Value="usubcategoria.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSubcategoria"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSubcategoria"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uunidademedida.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUnidadeMedida"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uUnidadeMedida"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uformapagamento.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmFormaPagamento"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uFormaPagamento"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uusuario.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUsuario"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uUsuario"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uempresa.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmEmpresa"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uEmpresa"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ufornecedor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmFornecedor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uFornecedor"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucliente.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCliente"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCliente"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ulogin.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmLogin"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uLogin"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucompra.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCompra"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCompra"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uproduto.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmProduto"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uProduto"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uvenda.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmVenda"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uVenda"/>
       </Unit>
     </Units>
   </ProjectOptions>

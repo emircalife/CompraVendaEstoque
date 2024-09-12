@@ -1,7 +1,7 @@
 object frmCategoria: TfrmCategoria
-  Left = 427
+  Left = 356
   Height = 585
-  Top = 185
+  Top = 220
   Width = 1012
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
@@ -25,6 +25,8 @@ object frmCategoria: TfrmCategoria
         FieldName = 'categoriaDescr'
       end    
       item
+        Alignment = taCenter
+        Title.Alignment = taCenter
         Title.Caption = 'Cadastro'
         Width = 120
         FieldName = 'dtCadastro'
@@ -938,7 +940,7 @@ object frmCategoria: TfrmCategoria
     Connection = DM.Conn
     SQL.Strings = (
       'SELECT idCategoria, categoriaDescr '
-      'FROM estoque.Categorias            '
+      'FROM estoque.categorias            '
       ' order BY categoriaDescr           '
     )
     Params = <>
@@ -947,7 +949,6 @@ object frmCategoria: TfrmCategoria
   end
   object dsListar: TDataSource
     DataSet = qryListar
-    OnDataChange = dsListarDataChange
     Left = 800
     Top = 192
   end
