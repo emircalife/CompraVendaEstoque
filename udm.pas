@@ -38,8 +38,35 @@ begin
 end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
+var
+  cPath : String;
+  cDatabase : String;
 begin
-  Conn.Connected := true;
+  cPath     := ExtractFilePath(ParamStr(0));
+  //cDatabase := 'MySQL';
+  cDatabase := 'Frebird';
+  if cDatabase = 'MySQL'then
+  begin
+    Conn.LibraryLocation := cPath + 'libmysql.dll';
+
+    Conn.Database := 'estoque';
+    Conn.HostName := 'localhost';
+    Conn.Catalog  := 'mysql';
+    Conn.Password := 'Etcn2676!';
+    Conn.User     := 'root';
+    Conn.Port     := 3306;
+  end else if cDatabase = 'Frebird' then
+  begin
+    Conn.Database := cPath + 'DB\estoque.fdb';
+    Conn.HostName := 'localhost';
+    Conn.Catalog  := 'Firebird';
+    Conn.Password := 'masterkey';
+    Conn.User     := 'SYSDBA';
+    Conn.Port     := 3050;
+  end;
+
+  Conn.Protocol   := Conn.Catalog;
+  Conn.Connected  := true;
 end;
 
 procedure TDM.DataModuleDestroy(Sender: TObject);

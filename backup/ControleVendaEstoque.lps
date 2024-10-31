@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="ControleVendaEstoque.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ControlevendaEstoque"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="30" Y="13"/>
+        <UsageCount Value="167"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uprincipal.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmPrincipal"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPrincipal"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="208"/>
+        <CursorPos Y="254"/>
+        <UsageCount Value="167"/>
+      </Unit>
+      <Unit>
+        <Filename Value="udm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DM"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="uDM"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos Y="60"/>
+        <UsageCount Value="167"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucategoria.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCategoria"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCategoria"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="134"/>
+        <CursorPos Y="149"/>
+        <UsageCount Value="158"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="92"/>
+        <CursorPos X="74" Y="91"/>
+        <UsageCount Value="157"/>
+      </Unit>
+      <Unit>
+        <Filename Value="usubcategoria.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSubcategoria"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSubcategoria"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="181"/>
+        <CursorPos X="91" Y="184"/>
+        <UsageCount Value="151"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uunidademedida.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUnidadeMedida"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uUnidadeMedida"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="89"/>
+        <CursorPos X="91" Y="92"/>
+        <UsageCount Value="148"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uformapagamento.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmFormaPagamento"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uFormaPagamento"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="83"/>
+        <CursorPos X="91" Y="87"/>
+        <UsageCount Value="146"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uusuario.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUsuario"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uUsuario"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="71"/>
+        <CursorPos X="201" Y="79"/>
+        <UsageCount Value="143"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uempresa.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmEmpresa"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uEmpresa"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="188"/>
+        <CursorPos X="29" Y="203"/>
+        <UsageCount Value="129"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ufornecedor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmFornecedor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uFornecedor"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="145"/>
+        <CursorPos X="91" Y="149"/>
+        <UsageCount Value="117"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucliente.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCliente"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCliente"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="143"/>
+        <CursorPos X="18" Y="152"/>
+        <UsageCount Value="109"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ulogin.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmLogin"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uLogin"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2"/>
+        <CursorPos X="59" Y="81"/>
+        <UsageCount Value="85"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucompra.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCompra"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCompra"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="664"/>
+        <CursorPos X="141" Y="691"/>
+        <UsageCount Value="79"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uproduto.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmProduto"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uProduto"/>
+        <TopLine Value="148"/>
+        <CursorPos X="8" Y="174"/>
+        <UsageCount Value="79"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uvenda.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmVenda"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uVenda"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="391"/>
+        <CursorPos X="113" Y="191"/>
+        <UsageCount Value="39"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../ControleFinanceiro/ucontrolefinanceiro.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmControleFinanceiro"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uControleFinanceiro"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <UsageCount Value="35"/>
+      </Unit>
+      <Unit>
+        <Filename Value="lclformat.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../.lazarus/onlinepackagemanager/packages/zeosdbo/src/dbc/ZDbcMySql.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1249"/>
+        <CursorPos Y="1265"/>
+        <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../.lazarus/onlinepackagemanager/packages/zeosdbo/src/component/ZDatasetParam.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4559"/>
+        <CursorPos Y="4583"/>
+        <UsageCount Value="1"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/3.4.0/lcl/dbgrids.pas"/>
+        <UnitName Value="DBGrids"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3280"/>
+        <CursorPos Y="3301"/>
+        <UsageCount Value="3"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/3.4.0/lcl/include/control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2954"/>
+        <CursorPos Y="2976"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../.lazarus/onlinepackagemanager/packages/Rx/rxcontrols/rxcurredit.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="548"/>
+        <CursorPos X="22" Y="206"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../.lazarus/onlinepackagemanager/packages/zeosdbo/src/component/ZAbstractRODataset.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3980"/>
+        <CursorPos X="29" Y="3993"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../ControleFinanceiro/lclformat.pas"/>
+        <UnitName Value="LCLFormat"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="15" Y="4"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="28">
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="184" Column="38" TopLine="151"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="186" Column="18" TopLine="153"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="321" Column="20" TopLine="288"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="362" Column="133" TopLine="330"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="410" Column="133" TopLine="377"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="28" Column="20" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="363" Column="122" TopLine="320"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="408" Column="5" TopLine="370"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="203" Column="3" TopLine="201"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="90" Column="29" TopLine="65"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="184" Column="38" TopLine="151"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="186" Column="18" TopLine="151"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="327" Column="27" TopLine="297"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="146" TopLine="144"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="165" TopLine="163"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="172" Column="15" TopLine="146"/>
+      </Position>
+      <Position>
+        <Filename Value="uproduto.pas"/>
+        <Caret Line="179" TopLine="148"/>
+      </Position>
+      <Position>
+        <Filename Value="uusuario.pas"/>
+        <Caret Line="75" Column="3" TopLine="75"/>
+      </Position>
+      <Position>
+        <Filename Value="uusuario.pas"/>
+        <Caret Line="83" Column="3" TopLine="83"/>
+      </Position>
+      <Position>
+        <Filename Value="uformapagamento.pas"/>
+        <Caret Line="144" Column="17" TopLine="144"/>
+      </Position>
+      <Position>
+        <Filename Value="ufornecedor.pas"/>
+        <Caret Line="301" TopLine="280"/>
+      </Position>
+      <Position>
+        <Filename Value="ufornecedor.pas"/>
+        <Caret Line="326" TopLine="305"/>
+      </Position>
+      <Position>
+        <Filename Value="usubcategoria.pas"/>
+        <Caret Line="258" TopLine="228"/>
+      </Position>
+      <Position>
+        <Filename Value="usubcategoria.pas"/>
+        <Caret Line="271" TopLine="241"/>
+      </Position>
+      <Position>
+        <Filename Value="uunidademedida.pas"/>
+        <Caret Line="119" Column="210" TopLine="109"/>
+      </Position>
+      <Position>
+        <Filename Value="uunidademedida.pas"/>
+        <Caret Line="131" Column="210" TopLine="121"/>
+      </Position>
+      <Position>
+        <Filename Value="ucompra.pas"/>
+        <Caret Line="10" Column="23" TopLine="10"/>
+      </Position>
+      <Position>
+        <Filename Value="ucompra.pas"/>
+        <Caret Line="378" Column="113" TopLine="352"/>
+      </Position>
+      <Position>
+        <Filename Value="ucompra.pas"/>
+        <Caret Line="691" Column="141" TopLine="664"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="ufornecedor.pas"/>
+        <Line Value="321"/>
+      </Item>
+    </BreakPoints>
+    <Watches>
+      <Item>
+        <Expression Value="Column.Field.FieldName"/>
+      </Item>
+      <Item>
+        <Expression Value="trim(edtMediaDiasEntrega.Text) = EmptyStr"/>
+      </Item>
+      <Item>
+        <Expression Value="trim(edtMediaDiasEntrega.Text) "/>
+      </Item>
+      <Item>
+        <Expression Value="edtMediaDiasEntrega.Text"/>
+      </Item>
+    </Watches>
+  </Debugging>
+</CONFIG>

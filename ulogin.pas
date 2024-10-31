@@ -78,7 +78,7 @@ const
                        '      senhaUsuario,               '+
                        '      nivelAcesso,                '+
                        '      dtCadastro                  '+
-                       ' FROM estoque.usuarios            '+
+                       ' FROM usuarios                    '+
                        ' WHERE nomeUsuario =:PnomeUsuario ';
 var
   QryManutencao : TZQuery;

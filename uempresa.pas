@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, DBGrids, StdCtrls,
-  MaskEdit, ExtCtrls, DBCtrls, ZDataset, uDM, uUtils, DB, Buttons, Grids;
+  MaskEdit, ExtCtrls, DBCtrls, ZDataset, ZAbstractRODataset, uDM, uUtils, DB,
+  Buttons, Grids;
 
 type
 
@@ -56,6 +57,23 @@ type
     lkpUF: TDBLookupComboBox;
     odImagem: TOpenDialog;
     pnlBotoes: TPanel;
+    qryListarBAIRRO: TZRawStringField;
+    qryListarCEP: TZRawStringField;
+    qryListarCIDADE: TZRawStringField;
+    qryListarCNPJ: TZRawStringField;
+    qryListarCOMPLEMENTO: TZRawStringField;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarEMAIL: TZRawStringField;
+    qryListarENDERECO: TZRawStringField;
+    qryListarIDEMPRESA: TZIntegerField;
+    qryListarLOGO: TZRawStringField;
+    qryListarNOMECONTATO: TZRawStringField;
+    qryListarNOMEFANTASIA: TZRawStringField;
+    qryListarNUMERO: TZRawStringField;
+    qryListarRAZAOSOCIAL: TZRawStringField;
+    qryListarTELEFONE: TZRawStringField;
+    qryListarUF: TZIntegerField;
+    qryListarWHATSAPP: TZRawStringField;
     qryUF: TZQuery;
     qryListar: TZQuery;
     rgpTipoTelefone: TRadioGroup;
@@ -70,6 +88,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure grdDadosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
     procedure rgpTipoTelefoneClick(Sender: TObject);
   private
     idEmpresa : Integer;
@@ -136,6 +156,12 @@ begin
     if UpperCase(trim(Column.Field.AsString)) = 'S' then // Cadastro está ativo
       imglstWhatsappGrid.Draw(TDBGrid(Sender).Canvas, Rect.Left +30,Rect.Top +3, 0);
   end;
+end;
+
+procedure TfrmEmpresa.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
 end;
 
 procedure TfrmEmpresa.btnAdicionarImagemClick(Sender: TObject);
@@ -208,10 +234,9 @@ const
                            '        emp.endereco, emp.numero,                 '+
                            '        emp.dtCadastro, emp.telefone,             '+
                            '        emp.whatsapp, emp.logo,                   '+
-                           '        DATE_FORMAT(emp.dtCadastro, ''%d/%m/%Y'') '+
-                           '                        as dtCadastro             '+
-                           '  FROM estoque.empresas emp                       '+
-                           '  INNER JOIN estoque.ufs uf ON (emp.uf = uf.idUf) '+
+                           '        emp.dtCadastro                            '+
+                           '  FROM empresas emp                               '+
+                           '  INNER JOIN ufs uf ON (emp.uf = uf.idUf)         '+
                            '  ORDER BY emp.nomeFantasia, emp.razaoSocial      ';
 begin
   try
@@ -269,7 +294,7 @@ end;
 
 procedure TfrmEmpresa.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.empresas (   '+
+  cSQLManutencao : String = 'INSERT INTO empresas (           '+
                             '    idempresa, nomeFantasia,     '+
                             '    razaoSocial, cnpj,           '+
                             '    bairro, cep, cidade,         '+
@@ -331,7 +356,7 @@ end;
 
 procedure TfrmEmpresa.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.empresas SET       '+
+  cSQLManutencao : String = 'UPDATE empresas SET               '+
                             '    nomeFantasia =:PnomeFantasia, '+
                             '    razaoSocial =:PrazaoSocial,   '+
                             '    cnpj =:Pcnpj,                 '+
@@ -392,9 +417,8 @@ end;
 
 procedure TfrmEmpresa.Excluir;
 const
-  cSQLManutencao : String = 'DELETE FROM estoque.empresas '+
-                            ' WHERE                       '+
-                            '  idEmpresa =:PidEmpresa     ';
+  cSQLManutencao : String = 'DELETE FROM empresas          '+
+                            ' WHERE idEmpresa =:PidEmpresa ';
 
 var
   QryManutencao : TZQuery;

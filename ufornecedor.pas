@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, DBGrids, StdCtrls,
-  MaskEdit, ExtCtrls, DBCtrls, ZDataset, uDM, uUtils, DB, Buttons, Grids;
+  MaskEdit, ExtCtrls, DBCtrls, ZDataset, ZAbstractRODataset, uDM, uUtils, DB,
+  Buttons, Grids;
 
 type
 
@@ -54,6 +55,23 @@ type
     lkpUF: TDBLookupComboBox;
     pnlBotoes: TPanel;
     qryListar: TZQuery;
+    qryListarBAIRRO: TZRawStringField;
+    qryListarCEP: TZRawStringField;
+    qryListarCIDADE: TZRawStringField;
+    qryListarCNPJ: TZRawStringField;
+    qryListarCOMPLEMENTO: TZRawStringField;
+    qryListarCONTATO: TZRawStringField;
+    qryListarDIASPARAENTREGA: TZIntegerField;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarEMAIL: TZRawStringField;
+    qryListarENDERECO: TZRawStringField;
+    qryListarIDFORNECEDOR: TZIntegerField;
+    qryListarNOMEFORNECEDOR: TZRawStringField;
+    qryListarNOMEUF: TZRawStringField;
+    qryListarNUMERO: TZRawStringField;
+    qryListarTELEFONE: TZRawStringField;
+    qryListarUF: TZIntegerField;
+    qryListarWHATSAPP: TZRawStringField;
     qryUF: TZQuery;
     rgpTipoTelefone: TRadioGroup;
     procedure btnAlterarClick(Sender: TObject);
@@ -62,10 +80,14 @@ type
     procedure btnGravarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
+    procedure edtMediaDiasEntregaExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure grdDadosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
+    procedure rgpTipoTelefoneClick(Sender: TObject);
   private
     var
       idfornecedor : Integer;
@@ -121,9 +143,29 @@ begin
   end;
 end;
 
+procedure TfrmFornecedor.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
+end;
+
+procedure TfrmFornecedor.rgpTipoTelefoneClick(Sender: TObject);
+begin
+  if rgpTipoTelefone.ItemIndex = 0 then
+     edtTelefone.EditMask := '(99) 99999-9999;1;_'
+  else if rgpTipoTelefone.ItemIndex = 1 then
+  edtTelefone.EditMask := '(99) 9999-9999;1;_';
+end;
+
 procedure TfrmFornecedor.btnSairClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfrmFornecedor.edtMediaDiasEntregaExit(Sender: TObject);
+begin
+  if trim(edtMediaDiasEntrega.Text).Equals('') then
+     edtMediaDiasEntrega.Text := '0';
 end;
 
 procedure TfrmFornecedor.btnNovoClick(Sender: TObject);
@@ -191,11 +233,10 @@ const
                            '       forn.email,                                '+
                            '       forn.telefone,                             '+
                            '       forn.whatsapp,                             '+
-                           '       DATE_FORMAT(forn.dtCadastro, ''%d/%m/%Y'') '+
-                           '                         as dtCadastro,           '+
+                           '       forn.dtCadastro,                           '+
                            '       uf.nomeUf                                  '+
-                           ' FROM estoque.fornecedores forn                   '+
-                           ' INNER JOIN estoque.ufs uf ON (forn.uf = uf.idUf) '+
+                           ' FROM fornecedores forn                           '+
+                           ' INNER JOIN ufs uf ON (forn.uf = uf.idUf)         '+
                            ' ORDER BY forn.nomeFornecedor                     ';
 
 begin
@@ -244,7 +285,7 @@ end;
 
 procedure TfrmFornecedor.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.fornecedores (               '+
+  cSQLManutencao : String = 'INSERT INTO fornecedores (                       '+
                             '        nomeFornecedor, cep, endereco,           '+
                             '        numero, bairro, cidade,                  '+
                             '        complemento, uf, cnpj, contato,          '+
@@ -262,9 +303,10 @@ var
   QryManutencao : TZQuery;
 begin
   try
-    QryManutencao:=TZQuery.Create(nil);
+    QryManutencao := TZQuery.Create(nil);
     QryManutencao.Connection := DM.Conn;
     QryManutencao.SQL.Add(cSQLManutencao);
+
     QryManutencao.ParamByName('PnomeFornecedor').AsString    := trim(edtFornecedor.Text);
     QryManutencao.ParamByName('Pcep').AsString               := trim(edtCEP.Text);
     QryManutencao.ParamByName('Pendereco').AsString          := trim(edtEndereco.Text);
@@ -276,7 +318,11 @@ begin
     QryManutencao.ParamByName('Pcnpj').AsString              := trim(edtCNPJ.Text);
     QryManutencao.ParamByName('Pcontato').AsString           := trim(edtContato.Text);
 
-    QryManutencao.ParamByName('PdiasParaEntrega').AsInteger  := uUtils.IIF(trim(edtMediaDiasEntrega.Text) = '', 0, StrToInt(trim(edtMediaDiasEntrega.Text)));
+    if trim(edtMediaDiasEntrega.Text).Equals('') then
+       QryManutencao.ParamByName('PdiasParaEntrega').AsInteger  := 0
+    else
+       QryManutencao.ParamByName('PdiasParaEntrega').AsInteger  := StrToInt(trim(edtMediaDiasEntrega.Text));
+
     QryManutencao.ParamByName('Pemail').AsString             := trim(edtEmail.Text);
     QryManutencao.ParamByName('Ptelefone').AsString          := trim(edtTelefone.Text);
     QryManutencao.ParamByName('Pwhatsapp').AsString          := uUtils.IIF(chkWhatsapp.Checked, 'S', 'N');
@@ -295,7 +341,7 @@ end;
 
 procedure TfrmFornecedor.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.fornecedores SET                  '+
+  cSQLManutencao : String = 'UPDATE fornecedores SET                          '+
                             '       nomeFornecedor =:PnomeFornecedor,         '+
                             '       cep =:Pcep,                               '+
                             '       endereco =:Pendereco,                     '+
@@ -349,9 +395,8 @@ end;
 
 procedure TfrmFornecedor.Excluir;
 const
-  cSQLManutencao : String = 'DELETE FROM estoque.fornecedores '+
-                            ' WHERE                           '+
-                            ' idFornecedor =:PidFornecedor    ';
+  cSQLManutencao : String = 'DELETE FROM fornecedores            '+
+                            ' WHERE idFornecedor =:PidFornecedor ';
 
 var
   QryManutencao : TZQuery;

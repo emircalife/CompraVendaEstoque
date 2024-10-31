@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, DBGrids, StdCtrls,
-  MaskEdit, ExtCtrls, ZDataset, Buttons, DBCtrls, uUtils, uDM;
+  MaskEdit, ExtCtrls, ZDataset, ZAbstractRODataset, Buttons, DBCtrls, uUtils,
+  uDM;
 
 type
 
@@ -33,6 +34,12 @@ type
     lblRepitaSenha: TLabel;
     lkpNivelAcesso: TDBLookupComboBox;
     pnlBotoes: TPanel;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarIDUSUARIO: TZIntegerField;
+    qryListarNIVELACESSO: TZIntegerField;
+    qryListarNOMENIVELACESSO: TZRawStringField;
+    qryListarNOMEUSUARIO: TZRawStringField;
+    qryListarSENHAUSUARIO: TZRawStringField;
     qryNivelAcesso: TZQuery;
     qryListar: TZQuery;
     procedure btnAlterarClick(Sender: TObject);
@@ -46,6 +53,8 @@ type
     procedure edtSenhaDblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
   private
     idUsuario : Integer;
     cOperacao : String; //(I)ncluir, (A)lterar, (C)onsultar
@@ -84,6 +93,12 @@ begin
 
   if qryNivelAcesso.State = dsInactive then
     qryNivelAcesso.Open;
+end;
+
+procedure TfrmUsuario.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
 end;
 
 procedure TfrmUsuario.btnNovoClick(Sender: TObject);
@@ -175,17 +190,15 @@ end;
 
 procedure TfrmUsuario.ListarTodos;
 const
-  cSQLConsultar : String = 'SELECT usu.idUsuario,                             '+
-                           '      usu.nomeUsuario,                            '+
-                           '      usu.senhaUsuario,                           '+
-                           '      usu.nivelAcesso,                            '+
-                           '      niv.nomeNivelAcesso,                        '+
-                           '       DATE_FORMAT(usu.dtCadastro, ''%d/%m/%Y'')  '+
-                           '                   as dtCadastro                  '+
-                           ' FROM estoque.usuarios usu                        '+
-                           ' INNER JOIN estoque.niveisAcesso niv              '+
-                           '         ON (usu.nivelAcesso = niv.idNivelAcesso) '+
-                           ' WHERE niv.statusNivelAcesso = ''A''              ';
+  cSQLConsultar : String = 'SELECT usu.idUsuario,                                                 '+
+                           '      usu.nomeUsuario,                                                '+
+                           '      usu.senhaUsuario,                                               '+
+                           '      usu.nivelAcesso,                                                '+
+                           '      niv.nomeNivelAcesso,                                            '+
+                           '      usu.dtCadastro                                                  '+
+                           ' FROM usuarios usu                                                    '+
+                           ' INNER JOIN niveisAcesso niv ON (usu.nivelAcesso = niv.idNivelAcesso) '+
+                           ' WHERE niv.statusNivelAcesso = ''A''                                  ';
 begin
   try
     qryListar.Close;
@@ -218,7 +231,7 @@ end;
 
 procedure TfrmUsuario.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.usuarios (                  '+
+  cSQLManutencao : String = 'INSERT INTO usuarios (                          '+
                             ' nomeUsuario, senhaUsuario, nivelAcesso,        '+
                             ' dtCadastro                                     '+
                             ' ) VALUES (                                     '+
@@ -257,7 +270,7 @@ end;
 
 procedure TfrmUsuario.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.usuarios SET   '+
+  cSQLManutencao : String = 'UPDATE usuarios SET           '+
                             ' nomeUsuario =:PnomeUsuario,  '+
                             ' senhaUsuario =:PsenhaUsuario '+
                             ' nivelAcesso =:PnivelAcesso   '+

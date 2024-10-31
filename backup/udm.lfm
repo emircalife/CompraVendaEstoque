@@ -1,0 +1,36 @@
+object DM: TDM
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 389
+  HorizontalOffset = 470
+  VerticalOffset = 293
+  Width = 745
+  PPI = 120
+  object Conn: TZConnection
+    ControlsCodePage = cCP_UTF8
+    ClientCodepage = 'utf8'
+    Catalog = 'Firebird'
+    Properties.Strings = (
+      'RawStringEncoding=DB_CP'
+      'codepage=utf8'
+    )
+    TransactIsolationLevel = tiReadCommitted
+    AfterConnect = ConnAfterConnect
+    DisableSavepoints = False
+    HostName = 'localhost'
+    Port = 3306
+    Database = 'D:\Projetos\Lazarus\CompraVendaEstoque\DB\ESTOQUE.FDB'
+    User = 'SYSDBA'
+    Password = 'masterkey'
+    Protocol = 'firebird'
+    Left = 50
+    Top = 30
+  end
+  object Trans: TZTransaction
+    Connection = Conn
+    AutoCommit = True
+    Left = 130
+    Top = 30
+  end
+end

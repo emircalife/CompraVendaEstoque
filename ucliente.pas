@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, DBGrids, StdCtrls,
-  MaskEdit, ExtCtrls, DBCtrls, ZDataset, Buttons, uDM, uUtils;
+  MaskEdit, ExtCtrls, DBCtrls, ZDataset, ZAbstractRODataset, Buttons, uDM,
+  uUtils;
 
 type
 
@@ -49,6 +50,21 @@ type
     lkpUF: TDBLookupComboBox;
     pnlBotoes: TPanel;
     qryListar: TZQuery;
+    qryListarBAIRRO: TZRawStringField;
+    qryListarCEP: TZRawStringField;
+    qryListarCIDADE: TZRawStringField;
+    qryListarCOMPLEMENTO: TZRawStringField;
+    qryListarCPF: TZRawStringField;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarEMAIL: TZRawStringField;
+    qryListarENDERECO: TZRawStringField;
+    qryListarIDCLIENTE: TZIntegerField;
+    qryListarNOMECLIENTE: TZRawStringField;
+    qryListarNOMEUF: TZRawStringField;
+    qryListarNUMERO: TZRawStringField;
+    qryListarTELEFONE: TZRawStringField;
+    qryListarUF: TZIntegerField;
+    qryListarWHATSAPP: TZRawStringField;
     qryUF: TZQuery;
     rgpTipoTelefone: TRadioGroup;
     procedure btnAlterarClick(Sender: TObject);
@@ -59,6 +75,8 @@ type
     procedure btnSairClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
   private
     var
       idCliente : Integer;
@@ -149,7 +167,14 @@ begin
   if qryUF.State = dsInactive then
     qryUF.Open;
 
+//  lkpUF.ListField := 'PE';
   cOperacao := 'C';
+end;
+
+procedure TfrmCliente.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
 end;
 
 
@@ -168,11 +193,10 @@ const
                            '       cli.email,                                '+
                            '       cli.telefone,                             '+
                            '       cli.whatsapp,                             '+
-                           '       DATE_FORMAT(cli.dtCadastro, ''%d/%m/%Y'') '+
-                           '                         as dtCadastro,          '+
+                           '       cli.dtCadastro,                           '+
                            '       uf.nomeUf                                 '+
-                           ' FROM estoque.clientes cli                       '+
-                           ' INNER JOIN estoque.ufs uf ON (cli.uf = uf.idUf) '+
+                           ' FROM clientes cli                               '+
+                           ' INNER JOIN ufs uf ON (cli.uf = uf.idUf)         '+
                            ' ORDER BY cli.nomeCliente                        ';
 
 begin
@@ -217,7 +241,7 @@ end;
 
 procedure TfrmCliente.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.clientes (                   '+
+  cSQLManutencao : String = 'INSERT INTO clientes (                           '+
                             '        nomeCliente, cep, endereco,              '+
                             '        numero, bairro, cidade,                  '+
                             '        complemento, uf, cpf, email,             '+
@@ -263,7 +287,7 @@ end;
 
 procedure TfrmCliente.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.clientes SET                      '+
+  cSQLManutencao : String = 'UPDATE clientes SET                              '+
                             '       nomeCliente =:PnomeCliente,               '+
                             '       cep =:Pcep,                               '+
                             '       endereco =:Pendereco,                     '+
@@ -313,9 +337,9 @@ end;
 
 procedure TfrmCliente.Excluir;
 const
-  cSQLManutencao : String = 'DELETE FROM estoque.clientes '+
-                            ' WHERE                       '+
-                            ' idCliente =:PidCliente      ';
+  cSQLManutencao : String = 'DELETE FROM clientes    '+
+                            ' WHERE                  '+
+                            ' idCliente =:PidCliente ';
 
 var
   QryManutencao : TZQuery;

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, DBGrids, StdCtrls,
-  MaskEdit, ExtCtrls, ZDataset, Buttons, uUtils, uDM;
+  MaskEdit, ExtCtrls, ZDataset, ZAbstractRODataset, Buttons, uUtils, uDM;
 
 type
 
@@ -29,6 +29,10 @@ type
     lblSigla: TLabel;
     pnlBotoes: TPanel;
     qryListar: TZQuery;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarIDUNIDADEMEDIDA: TZIntegerField;
+    qryListarNOMEUNIDADEMEDIDA: TZRawStringField;
+    qryListarSIGLAUNIDADEMEDIDA: TZRawStringField;
     procedure btnAlterarClick(Sender: TObject);
     procedure btnDesfazerClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
@@ -38,6 +42,9 @@ type
     procedure dsListarDataChange(Sender: TObject; Field: TField);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure pnlBotoesClick(Sender: TObject);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
   private
     idUnidadeMedida : Integer;
     cOperacao   : String; //(I)ncluir, (A)lterar, (C)onsultar
@@ -72,6 +79,17 @@ begin
   uUtils.limpaCampos(self);
 
   cOperacao := 'C';
+end;
+
+procedure TfrmUnidadeMedida.pnlBotoesClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmUnidadeMedida.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
 end;
 
 procedure TfrmUnidadeMedida.dsListarDataChange(Sender: TObject; Field: TField);
@@ -137,9 +155,8 @@ const
   cSQLConsultar : String = 'SELECT uni.idUnidadeMedida,                       '+
                            '       uni.nomeUnidadeMedida,                     '+
                            '       uni.siglaUnidadeMedida,                    '+
-                           '       DATE_FORMAT(uni.dtCadastro, ''%d/%m/%Y'')  '+
-                           '                                as dtCadastro     '+
-                           ' FROM estoque.unidadesMedida uni                  '+
+                           '       uni.dtCadastro                             '+
+                           ' FROM unidadesMedida uni                          '+
                            ' ORDER BY nomeUnidadeMedida                       ';
 begin
   try
@@ -173,7 +190,7 @@ end;
 
 procedure TfrmUnidadeMedida.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.unidadesMedida (         '+
+  cSQLManutencao : String = 'INSERT INTO unidadesMedida (                 '+
                             ' nomeUnidadeMedida, siglaUnidadeMedida,      '+
                             ' dtCadastro                                  '+
                             ' ) VALUES (                                  '+
@@ -205,7 +222,7 @@ end;
 
 procedure TfrmUnidadeMedida.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.unidadesMedida SET         '+
+  cSQLManutencao : String = 'UPDATE unidadesMedida SET                 '+
                             ' nomeUnidadeMedida =:PnomeUnidadeMedida,  '+
                             ' siglaUnidadeMedida =:PsiglaUnidadeMedida '+
                             ' WHERE                                    '+
@@ -235,7 +252,7 @@ end;
 
 procedure TfrmUnidadeMedida.Excluir;
 const
-  cSQLManutencao : String = 'DELETE FROM estoque.unidadesMedida  '+
+  cSQLManutencao : String = 'DELETE FROM unidadesMedida          '+
                             ' WHERE                              '+
                             ' idUnidadeMedida =:PidUnidadeMedida ';
 

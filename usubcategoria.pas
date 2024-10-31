@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  MaskEdit, DBGrids, DBCtrls, uUtils, uDM, uCategoria, ZDataset, Buttons;
+  MaskEdit, DBGrids, DBCtrls, uUtils, uDM, uCategoria, ZDataset,
+  ZAbstractRODataset, Buttons;
 
 type
 
@@ -32,6 +33,11 @@ type
     pnlBotoes: TPanel;
     qryListar: TZQuery;
     qryCategoria: TZQuery;
+    qryListarCATEGORIA: TZIntegerField;
+    qryListarCATEGORIADESCR: TZRawStringField;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarIDSUBCATEGORIA: TZIntegerField;
+    qryListarSUBCATEGORIADESCR: TZRawStringField;
     procedure btnAlterarClick(Sender: TObject);
     procedure btnDesfazerClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
@@ -45,6 +51,8 @@ type
     procedure lblCategoriaClick(Sender: TObject);
     procedure lkpCategoriaChange(Sender: TObject);
     procedure pnlBotoesClick(Sender: TObject);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
   private
     idSubcategoria : Integer;
     cOperacao   : String; //(I)ncluir, (A)lterar, (C)onsultar
@@ -170,17 +178,22 @@ begin
 
 end;
 
+procedure TfrmSubcategoria.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
+end;
+
 procedure TfrmSubcategoria.ListarTodos;
 const
-  cSQLConsultar : String = 'select sub.idSubcategoria, sub.subcategoriaDescr, '+
-                           '       sub.categoria,                             '+
-                           '       DATE_FORMAT(sub.dtCadastro, ''%d/%m/%Y'')  '+
-                           '                                as dtCadastro,    '+
-                           '       cat.categoriaDescr                         '+
-                           'from subcategorias sub                            '+
-                           'inner join categorias cat                         '+
-                           '         on (sub.categoria = cat.idCategoria)     '+
-                           'order by sub.subcategoriaDescr                    ';
+  cSQLConsultar : String = 'select sub.idSubcategoria,                                     '+
+                           '       sub.subcategoriaDescr,                                  '+
+                           '       sub.categoria,                                          '+
+                           '       sub.dtCadastro,                                         '+
+                           '       cat.categoriaDescr                                      '+
+                           'from subcategorias sub                                         '+
+                           'inner join categorias cat on (sub.categoria = cat.idCategoria) '+
+                           'order by sub.subcategoriaDescr                                 ';
 begin
   try
     qryListar.Close;
@@ -213,7 +226,7 @@ end;
 
 procedure TfrmSubcategoria.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.subcategorias (             '+
+  cSQLManutencao : String = 'INSERT INTO subcategorias (                     '+
                             ' subcategoriaDescr, categoria, dtCadastro       '+
                             ' ) VALUES (                                     '+
                             ' :PsubcategoriaDescr, :Pcategoria, :PdtCadastro '+
@@ -243,7 +256,7 @@ end;
 
 procedure TfrmSubcategoria.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.subcategorias              '+
+  cSQLManutencao : String = 'UPDATE subcategorias SET                  '+
                             ' subcategoriaDescr = :PsubcategoriaDescr, '+
                             ' categoria = :Pcategoria                  '+
                             ' WHERE idSubcategoria = :PidSubcategoria  ';
@@ -273,7 +286,7 @@ end;
 
 procedure TfrmSubcategoria.Excluir;
 const
-  cSQLManutencao : String = 'DELETE from estoque.subcategorias         '+
+  cSQLManutencao : String = 'DELETE from subcategorias                 '+
                             ' WHERE idSubcategoria = :PidSubcategoria  ';
 var
   QryManutencao : TZQuery;

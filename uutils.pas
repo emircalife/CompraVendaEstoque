@@ -55,7 +55,7 @@ function IIf(Expressao: Variant; ParteTRUE, ParteFALSE: Variant): Variant;
 function isCategoriaComSubcategoria(idCategoria : Integer):Boolean;
 const
   cSQLBusca : String = 'SELECT idSubcategoria            '+
-                       '  FROM estoque.subcategorias     '+
+                       '  FROM subcategorias             '+
                        '  WHERE categoria =:PidCategoria ';
 var
   QryManutencao  : TZQuery;
@@ -84,11 +84,11 @@ end;
 function isCategoriaOuSubcategoriaComProduto(idCategoria, idSubcategoria : Integer):Boolean;
 const
   cSQLBuscaCategoria : String = 'SELECT produto                 '+
-                                '  FROM estoque.produtos        '+
+                                '  FROM produtos                '+
                                 '  WHERE categoria =:Pcategoria ';
 
   cSQLBuscaSubcategoria : String = 'SELECT subcategoria                  '+
-                                   '  FROM estoque.produtos              '+
+                                   '  FROM produtos                      '+
                                    '  WHERE subcategoria =:Psubcategoria ';
 
 var

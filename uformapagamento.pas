@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, DBGrids, StdCtrls,
-  MaskEdit, ExtCtrls, ZDataset, Buttons, uUtils, uDM;
+  MaskEdit, ExtCtrls, ZDataset, ZAbstractRODataset, Buttons, uUtils, uDM;
 
 type
 
@@ -27,6 +27,9 @@ type
     lblFormaPagamento: TLabel;
     pnlBotoes: TPanel;
     qryListar: TZQuery;
+    qryListarDTCADASTRO: TZDateTimeField;
+    qryListarIDFORMAPAGAMENTO: TZIntegerField;
+    qryListarNOMEFORMAPAGAMENTO: TZRawStringField;
     procedure btnAlterarClick(Sender: TObject);
     procedure btnDesfazerClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
@@ -36,6 +39,9 @@ type
     procedure dsListarDataChange(Sender: TObject; Field: TField);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure pnlBotoesClick(Sender: TObject);
+    procedure qryListarDTCADASTROGetText(Sender: TField; var aText: string;
+      DisplayText: Boolean);
   private
     idFormaPagamento: Integer;
     cOperacao   : String; //(I)ncluir, (A)lterar, (C)onsultar
@@ -68,6 +74,17 @@ begin
   uUtils.limpaCampos(self);
 
   cOperacao := 'C';
+end;
+
+procedure TfrmFormaPagamento.pnlBotoesClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmFormaPagamento.qryListarDTCADASTROGetText(Sender: TField;
+  var aText: string; DisplayText: Boolean);
+begin
+  aText := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
 end;
 
 procedure TfrmFormaPagamento.dsListarDataChange(Sender: TObject; Field: TField);
@@ -124,17 +141,16 @@ begin
 
   uUtils.limpaCampos(self);
 
-  Caption := 'FOrmas de Pagamento';
+  Caption := 'Formas de Pagamento';
 end;
 
 procedure TfrmFormaPagamento.ListarTodos;
 const
-  cSQLConsultar : String = 'SELECT idFormaPagamento,                     '+
-                           '       NomeFormaPagamento,                   '+
-                           '       DATE_FORMAT(dtCadastro, ''%d/%m/%Y'') '+
-                           '                   as dtCadastro             '+
-                           ' FROM estoque.formasPagamento                '+
-                           ' ORDER BY NomeFormaPagamento                 ';
+  cSQLConsultar : String = 'SELECT idFormaPagamento,     '+
+                           '       NomeFormaPagamento,   '+
+                           '       dtCadastro            '+
+                           ' FROM formasPagamento        '+
+                           ' ORDER BY NomeFormaPagamento ';
 begin
   try
     qryListar.Close;
@@ -166,7 +182,7 @@ end;
 
 procedure TfrmFormaPagamento.Incluir;
 const
-  cSQLManutencao : String = 'INSERT INTO estoque.formasPagamento( '+
+  cSQLManutencao : String = 'INSERT INTO formasPagamento(         '+
                             ' NomeFormaPagamento, dtCadastro      '+
                             ' ) VALUES (                          '+
                             ' :PNomeFormaPagamento, :PdtCadastro  '+
@@ -195,10 +211,9 @@ end;
 
 procedure TfrmFormaPagamento.Alterar;
 const
-  cSQLManutencao : String = 'UPDATE estoque.formasPagamento SET        '+
-                            ' NomeFormaPagamento =:PNomeFormaPagamento '+
-                            ' WHERE                                    '+
-                            ' idFormaPagamento =:PidFormaPagamento     ';
+  cSQLManutencao : String = 'UPDATE formasPagamento SET                  '+
+                            ' NomeFormaPagamento =:PNomeFormaPagamento   '+
+                            ' WHERE idFormaPagamento =:PidFormaPagamento ';
 
 var
   QryManutencao : TZQuery;
@@ -223,9 +238,8 @@ end;
 
 procedure TfrmFormaPagamento.Excluir;
 const
-  cSQLManutencao : String = 'DELETE FROM estoque.formasPagamento   '+
-                            ' WHERE                                '+
-                            ' idFormaPagamento =:pidFormaPagamento ';
+  cSQLManutencao : String = 'DELETE FROM formasPagamento                 '+
+                            ' WHERE idFormaPagamento =:pidFormaPagamento ';
 
 var
   QryManutencao : TZQuery;
