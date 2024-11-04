@@ -337,7 +337,7 @@ begin
     QryManutencao.ParamByName('PformaPagamento').AsInteger    := lkpFormaDePagamento.KeyValue;
     QryManutencao.ParamByName('PdtVenda').AsDateTime          := StrToDate(edtDtVenda.Text);
     QryManutencao.ParamByName('Pusuario').AsInteger           := nIdUsuarioLogado;
-    QryManutencao.ParamByName('PDtEntrega').AsDateTime        := uUtils.IIf(trim(edtDtEntrega.Text) = '', StrToDate('00/00/0000'), StrToDate(edtDtEntrega.Text));
+    QryManutencao.ParamByName('PDtEntrega').AsDateTime        := uUtils.IIf(trim(edtDtEntrega.Text) = '', StrToDate('09/09/9999'), StrToDate(edtDtEntrega.Text));
     QryManutencao.ParamByName('PdtCadastro').AsDateTime       := now;
     QryManutencao.ExecSQL;
 

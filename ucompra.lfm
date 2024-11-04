@@ -8,10 +8,9 @@ object frmCompra: TfrmCompra
   Caption = 'Compras'
   ClientHeight = 879
   ClientWidth = 1537
+  Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poMainFormCenter
-  LCLVersion = '3.6.0.0'
   object grdDados: TDBGrid
     Left = 8
     Height = 240
@@ -45,7 +44,7 @@ object frmCompra: TfrmCompra
       item
         Title.Caption = 'Status'
         Width = 150
-        FieldName = 'nomeStatusCompra'
+        FieldName = 'NOMESTATUSCOMPRA'
       end    
       item
         Alignment = taCenter
@@ -56,7 +55,8 @@ object frmCompra: TfrmCompra
       end>
     DataSource = dsListar
     ReadOnly = True
-    TabOrder = 8
+    TabOrder = 22
+    TabStop = False
   end
   object lblDtCadastro: TLabel
     Left = 16
@@ -84,7 +84,7 @@ object frmCompra: TfrmCompra
     Width = 1537
     ClientHeight = 74
     ClientWidth = 1537
-    TabOrder = 20
+    TabOrder = 8
     OnClick = pnlBotoesClick
     object btnNovo: TBitBtn
       Left = 1
@@ -226,8 +226,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnNovoClick
       TabOrder = 0
+      OnClick = btnNovoClick
     end
     object btnAlterar: TBitBtn
       Left = 104
@@ -369,8 +369,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnAlterarClick
       TabOrder = 1
+      OnClick = btnAlterarClick
     end
     object btnGravar: TBitBtn
       Left = 207
@@ -512,8 +512,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnGravarClick
       TabOrder = 2
+      OnClick = btnGravarClick
     end
     object btnExcluir: TBitBtn
       Left = 310
@@ -655,8 +655,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnExcluirClick
       TabOrder = 3
+      OnClick = btnExcluirClick
     end
     object btnDesfazer: TBitBtn
       Left = 413
@@ -798,8 +798,8 @@ object frmCompra: TfrmCompra
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphTop
-      OnClick = btnDesfazerClick
       TabOrder = 4
+      OnClick = btnDesfazerClick
     end
   end
   object lblDtCompra: TLabel
@@ -842,6 +842,7 @@ object frmCompra: TfrmCompra
     LookupCache = False
     Style = csDropDownList
     TabOrder = 4
+    OnChange = lkpFornecedorChange
   end
   object btnNovoFornecedor: TBitBtn
     Left = 688
@@ -917,6 +918,8 @@ object frmCompra: TfrmCompra
     Width = 80
     Alignment = taRightJustify
     NumbersOnly = True
+    ReadOnly = True
+    TabStop = False
     TabOrder = 2
   end
   object grdDadosItens: TDBGrid
@@ -929,54 +932,50 @@ object frmCompra: TfrmCompra
       item
         Title.Caption = 'Produto'
         Width = 300
+        FieldName = 'NOMEPRODUTO'
       end    
       item
         Title.Caption = 'Categoria'
         Width = 300
-        FieldName = 'categoriaDescr'
+        FieldName = 'CATEGORIADESCR'
       end    
       item
         Title.Caption = 'Subcategoria'
         Width = 300
+        FieldName = 'SUBCATEGORIADESCR'
       end    
       item
         Alignment = taRightJustify
         Title.Alignment = taCenter
         Title.Caption = 'Qtde'
         Width = 100
-        FieldName = 'quantidade'
+        FieldName = 'QUANTIDADE'
       end    
       item
         Alignment = taRightJustify
         Title.Alignment = taCenter
         Title.Caption = 'R$ Custo Unit.'
         Width = 120
-        FieldName = 'vlCusto'
+        FieldName = 'VLCUSTO'
       end    
       item
         Alignment = taRightJustify
         Title.Alignment = taCenter
         Title.Caption = 'R$ Venda Unid.'
         Width = 120
-        FieldName = 'vlVenda'
+        FieldName = 'VLVENDA'
       end    
       item
         Alignment = taRightJustify
         Title.Alignment = taCenter
         Title.Caption = 'R$ Total Item'
         Width = 120
-        FieldName = 'vlTotalItem'
-      end    
-      item
-        Alignment = taCenter
-        Title.Alignment = taCenter
-        Title.Caption = 'Cadastro'
-        Width = 120
-        FieldName = 'dtCadastro'
+        FieldName = 'VLTOTALITEM'
       end>
     DataSource = dsListarItens
     ReadOnly = True
-    TabOrder = 21
+    TabOrder = 9
+    TabStop = False
   end
   object lblCategoria: TLabel
     Left = 16
@@ -998,7 +997,7 @@ object frmCompra: TfrmCompra
     ListSource = dsCategoria
     LookupCache = False
     Style = csDropDownList
-    TabOrder = 9
+    TabOrder = 10
   end
   object btnNovaCategoria: TBitBtn
     Left = 1086
@@ -1006,7 +1005,7 @@ object frmCompra: TfrmCompra
     Top = 643
     Width = 23
     Caption = '...'
-    TabOrder = 10
+    TabOrder = 11
   end
   object lblSubcategoria: TLabel
     Left = 16
@@ -1028,7 +1027,7 @@ object frmCompra: TfrmCompra
     ListSource = dsSubcategoria
     LookupCache = False
     Style = csDropDownList
-    TabOrder = 11
+    TabOrder = 12
   end
   object btnNovaSubcategoria: TBitBtn
     Left = 1086
@@ -1036,7 +1035,7 @@ object frmCompra: TfrmCompra
     Top = 682
     Width = 23
     Caption = '...'
-    TabOrder = 12
+    TabOrder = 13
   end
   object lblProduto: TLabel
     Left = 16
@@ -1057,9 +1056,9 @@ object frmCompra: TfrmCompra
     ListFieldIndex = 0
     ListSource = dsProduto
     LookupCache = False
-    OnChange = lkpProdutoChange
     Style = csDropDownList
-    TabOrder = 13
+    TabOrder = 14
+    OnChange = lkpProdutoChange
   end
   object btnNovoProduto: TBitBtn
     Left = 1086
@@ -1067,7 +1066,7 @@ object frmCompra: TfrmCompra
     Top = 721
     Width = 23
     Caption = '...'
-    TabOrder = 14
+    TabOrder = 15
   end
   object lblValorDeCusto: TLabel
     Left = 256
@@ -1083,7 +1082,7 @@ object frmCompra: TfrmCompra
     Width = 80
     Alignment = taRightJustify
     ReadOnly = True
-    TabOrder = 16
+    TabOrder = 17
     TabStop = False
   end
   object lblValorDeVenda: TLabel
@@ -1100,7 +1099,7 @@ object frmCompra: TfrmCompra
     Width = 80
     Alignment = taRightJustify
     ReadOnly = True
-    TabOrder = 17
+    TabOrder = 18
     TabStop = False
     OnChange = edtValorDeVendaChange
   end
@@ -1117,7 +1116,7 @@ object frmCompra: TfrmCompra
     Top = 759
     Width = 80
     Alignment = taRightJustify
-    TabOrder = 15
+    TabOrder = 16
     OnChange = edtQuantidadeChange
   end
   object lblValorDeDesconto: TLabel
@@ -1133,7 +1132,7 @@ object frmCompra: TfrmCompra
     Top = 759
     Width = 80
     Alignment = taRightJustify
-    TabOrder = 18
+    TabOrder = 19
     OnChange = edtValorDeDescontoChange
   end
   object lblValorTotalDoItem: TLabel
@@ -1150,7 +1149,7 @@ object frmCompra: TfrmCompra
     Width = 80
     Alignment = taRightJustify
     ReadOnly = True
-    TabOrder = 19
+    TabOrder = 20
     TabStop = False
   end
   object pnlBotoesItens: TPanel
@@ -1161,7 +1160,8 @@ object frmCompra: TfrmCompra
     Align = alBottom
     ClientHeight = 74
     ClientWidth = 1537
-    TabOrder = 22
+    TabOrder = 21
+    OnClick = pnlBotoesItensClick
     object btnNovoItens: TBitBtn
       Left = 1
       Height = 72
@@ -1302,8 +1302,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnNovoItensClick
       TabOrder = 0
+      OnClick = btnNovoItensClick
     end
     object btnAlterarItens: TBitBtn
       Left = 104
@@ -1445,8 +1445,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnAlterarItensClick
       TabOrder = 1
+      OnClick = btnAlterarItensClick
     end
     object btnGravarItens: TBitBtn
       Left = 207
@@ -1588,8 +1588,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnGravarItensClick
       TabOrder = 2
+      OnClick = btnGravarItensClick
     end
     object btnExcluirItens: TBitBtn
       Left = 310
@@ -1731,8 +1731,8 @@ object frmCompra: TfrmCompra
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       Layout = blGlyphTop
-      OnClick = btnExcluirItensClick
       TabOrder = 3
+      OnClick = btnExcluirItensClick
     end
     object btnDesfazerItens: TBitBtn
       Left = 413
@@ -1874,8 +1874,8 @@ object frmCompra: TfrmCompra
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphTop
-      OnClick = btnDesfazerItensClick
       TabOrder = 4
+      OnClick = btnDesfazerItensClick
     end
     object btnSair: TBitBtn
       Left = 1433
@@ -2017,8 +2017,8 @@ object frmCompra: TfrmCompra
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphTop
-      OnClick = btnSairClick
       TabOrder = 5
+      OnClick = btnSairClick
     end
   end
   object qryListar: TZQuery

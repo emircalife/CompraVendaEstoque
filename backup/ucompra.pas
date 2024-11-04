@@ -96,8 +96,10 @@ type
     procedure edtValorDeVendaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lkpFornecedorChange(Sender: TObject);
     procedure lkpProdutoChange(Sender: TObject);
     procedure pnlBotoesClick(Sender: TObject);
+    procedure pnlBotoesItensClick(Sender: TObject);
   private
     idCompra, idCompraItem : Integer;
     cOperacaoCompra, cOperacaoItemCompra : String;
@@ -258,6 +260,19 @@ begin
     qryProduto.Open;
 end;
 
+procedure TfrmCompra.lkpFornecedorChange(Sender: TObject);
+var
+  nDiasEntrega : Integer;
+
+begin
+  nDiasEntrega := qryFornecedor.FieldByName('DIASPARAENTREGA').AsInteger;
+
+  if (nDiasEntrega = null) then
+     nDiasEntrega := 0;
+
+  edtDiasParaEntrega.Text := Trim(IntToStr(nDiasEntrega));
+end;
+
 procedure TfrmCompra.lkpProdutoChange(Sender: TObject);
 begin
   edtValorDeCusto.Text := FormatFloat('#,##0.00', qryProduto.FieldByName('valorCusto').AsCurrency);
@@ -265,6 +280,11 @@ begin
 end;
 
 procedure TfrmCompra.pnlBotoesClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmCompra.pnlBotoesItensClick(Sender: TObject);
 begin
 
 end;
@@ -414,12 +434,12 @@ procedure TfrmCompra.GetDadosTabelaCompras;
 begin
   if (qryListar.State <> dsInactive) and (qryListar.RecordCount >= 1) then
   begin
-    idCompra           := qryListar.FieldByName('idCategoria').AsInteger;
+    idCompra           := qryListar.FieldByName('idCompra').AsInteger;
     edtDtCadastro.Text := FormatDateTime('dd/mm/yyyy', qryListar.FieldByName('dtCadastro').AsDateTime);
 
     lkpFornecedor.KeyValue       := qryListar.FieldByName('fornecedor').AsInteger;
     lkpFormaDePagamento.KeyValue := qryListar.FieldByName('formaPagamento').AsInteger;
-    edtDtCompra.Text             := DateToStr(qryListar.FieldByName('formaPagamento').AsDateTime);
+    edtDtCompra.Text             := DateToStr(qryListar.FieldByName('DTCompra').AsDateTime);
     lkpStatusDaCompra.KeyValue   := qryListar.FieldByName('status').AsInteger;
     edtDiasParaEntrega.Text      := trim(intToStr(qryListar.FieldByName('diasParaEntrega').AsInteger));
   end;
@@ -448,11 +468,11 @@ const
                            ' ORDER BY compra, idCompraItem                                              ';
 begin
   try
-    qryListar.Close;
-    qryListar.SQL.Clear;
-    qryListar.SQL.Add(cSQLConsultar);
-    qryListar.ParamByName('PidCompra').AsInteger := nidCompra;
-    qryListar.Open;
+    qryListarItens.Close;
+    qryListarItens.SQL.Clear;
+    qryListarItens.SQL.Add(cSQLConsultar);
+    qryListarItens.ParamByName('PidCompra').AsInteger := nidCompra;
+    qryListarItens.Open;
   except
   end;
 end;
@@ -509,15 +529,15 @@ end;
 
 procedure TfrmCompra.CompraIncluir;
 const
-  cSQLManutencao : String = 'INSERT INTO compras (                     '+
-                            ' fornecedor, formaPagamento,              '+
-                            ' dtCompra, usuario, diasParaEntrega       '+
-                            ' dtCadastro                               '+
-                            ' ) VALUES (                               '+
-                            ' :Pfornecedor, :PformaPagamento,          '+
-                            ' :PdtCompra, :Pusuario, :PdiasParaEntrega '+
-                            ' :PdtCadastro                             '+
-                            ' )                                        ';
+  cSQLManutencao : String = 'INSERT INTO compras (                      '+
+                            ' fornecedor, formaPagamento,               '+
+                            ' dtCompra, usuario, diasParaEntrega,       '+
+                            ' dtCadastro, status                        '+
+                            ' ) VALUES (                                '+
+                            ' :Pfornecedor, :PformaPagamento,           '+
+                            ' :PdtCompra, :Pusuario, :PdiasParaEntrega, '+
+                            ' :PdtCadastro, :Pstatus                    '+
+                            ' )                                         ';
 
 var
   QryManutencao : TZQuery;
@@ -530,8 +550,15 @@ begin
     QryManutencao.ParamByName('PformaPagamento').AsInteger    := lkpFormaDePagamento.KeyValue;
     QryManutencao.ParamByName('PdtCompra').AsDateTime         := StrToDate(edtDtCompra.Text);
     QryManutencao.ParamByName('Pusuario').AsInteger           := nIdUsuarioLogado;
-    QryManutencao.ParamByName('PdiasParaEntrega').AsInteger   := uUtils.IIf(trim(edtDiasParaEntrega.Text) = '', 0, StrToInt(edtDiasParaEntrega.Text));
+
+    if trim(edtDiasParaEntrega.Text) = '' then
+      QryManutencao.ParamByName('PdiasParaEntrega').AsInteger   := 0
+    else
+      QryManutencao.ParamByName('PdiasParaEntrega').AsInteger   := StrToInt(edtDiasParaEntrega.Text);
+
     QryManutencao.ParamByName('PdtCadastro').AsDateTime       := now;
+    QryManutencao.ParamByName('Pstatus').AsInteger            := lkpStatusDaCompra.KeyValue;
+
     QryManutencao.ExecSQL;
 
     ListarTodosCompras;
@@ -552,8 +579,7 @@ const
                             ' dtCompra =:PdtCompra,              '+
                             ' usuario =:Pusuario,                '+
                             ' diasParaEntrega =:PdiasParaEntrega '+
-                            ' WHERE                              '+
-                            ' idCompra =:PidCompra               ';
+                            ' WHERE idCompra =:PidCompra         ';
 
 var
   QryManutencao : TZQuery;
@@ -589,7 +615,7 @@ var
   QryManutencao : TZQuery;
 begin
   if MessageDlg('Confirma a exclusão da compra feita em ' +
-       FormatFloat('#,##0.00', qryListar.FieldByName('dtCompra').AsDateTime) + '?',
+       trim(DateToStr(qryListar.FieldByName('dtCompra').AsDateTime)) + '?',
        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   begin
     try
@@ -615,13 +641,11 @@ const
   cSQLManutencao : String = 'INSERT INTO compraItens (                '+
                             ' compra, categoria, subcategoria,        '+
                             ' produto, quantidade, vlCusto,           '+
-                            ' vlVenda, vlDesconto, vlTotalItem,       '+
-                            ' dtCadastro                              '+
+                            ' vlVenda, vlDesconto, vlTotalItem        '+
                             ' ) VALUES (                              '+
                             ' :Pcompra, :Pcategoria, :Psubcategoria,  '+
                             ' :Pproduto, :Pquantidade, :PvlCusto,     '+
-                            ' :PvlVenda, :PvlDesconto, :PvlTotalItem, '+
-                            ' :PdtCadastro                            '+
+                            ' :PvlVenda, :PvlDesconto, :PvlTotalItem  '+
                             ' )                                       ';
 
 var
@@ -637,12 +661,32 @@ begin
     QryManutencao.ParamByName('Pcategoria').AsInteger    := lkpCategoria.KeyValue;
     QryManutencao.ParamByName('Psubcategoria').AsInteger := lkpSubcategoria.KeyValue;
     QryManutencao.ParamByName('Pproduto').AsInteger      := lkpProduto.KeyValue;
-    QryManutencao.ParamByName('Pquantidade').AsInteger   := uUtils.IIf(trim(edtQuantidade.Text) = '', 0, StrToInt(edtQuantidade.Text));
-    QryManutencao.ParamByName('PvlCusto').AsInteger      := uUtils.IIf(trim(edtValorDeCusto.Text) = '', 0, StrToInt(edtValorDeCusto.Text));
-    QryManutencao.ParamByName('PvlVenda').AsInteger      := uUtils.IIf(trim(edtValorDeVenda.Text) = '', 0, StrToInt(edtValorDeVenda.Text));
-    QryManutencao.ParamByName('PvlDesconto').AsInteger   := uUtils.IIf(trim(edtValorDeDesconto.Text) = '', 0, StrToInt(edtValorDeDesconto.Text));
-    QryManutencao.ParamByName('PvlTotalItem').AsInteger  := uUtils.IIf(trim(edtValorTotalDoItem.Text) = '', 0, StrToInt(edtValorTotalDoItem.Text));
-    QryManutencao.ParamByName('PdtCadastro').AsDateTime  := now;
+
+    if trim(edtQuantidade.Text) = '' then
+      QryManutencao.ParamByName('Pquantidade').AsInteger   := 0
+    else
+      QryManutencao.ParamByName('Pquantidade').AsInteger   := StrToInt(edtQuantidade.Text);
+
+    if trim(edtValorDeCusto.Text) = '' then
+      QryManutencao.ParamByName('PvlCusto').AsInteger      := 0
+    else
+      QryManutencao.ParamByName('PvlCusto').AsInteger      := StrToInt(edtValorDeCusto.Text);
+
+    if trim(edtValorDeVenda.Text) = '' then
+      QryManutencao.ParamByName('PvlVenda').AsInteger      := 0
+    else
+      QryManutencao.ParamByName('PvlVenda').AsInteger      := StrToInt(edtValorDeVenda.Text);
+
+    if trim(edtValorDeDesconto.Text) = '' then
+      QryManutencao.ParamByName('PvlDesconto').AsInteger   := 0
+    else
+      QryManutencao.ParamByName('PvlDesconto').AsInteger   := StrToInt(edtValorDeDesconto.Text);
+
+    if trim(edtValorTotalDoItem.Text) = '' then
+      QryManutencao.ParamByName('PvlTotalItem').AsInteger  := 0
+    else
+      QryManutencao.ParamByName('PvlTotalItem').AsInteger  := StrToInt(edtValorTotalDoItem.Text);
+
     QryManutencao.ExecSQL;
 
     ListarTodosCompraItens(idCompra);
@@ -681,11 +725,31 @@ begin
     QryManutencao.ParamByName('Pcategoria').AsInteger    := lkpCategoria.KeyValue;
     QryManutencao.ParamByName('Psubcategoria').AsInteger := lkpSubcategoria.KeyValue;
     QryManutencao.ParamByName('Pproduto').AsInteger      := lkpProduto.KeyValue;
-    QryManutencao.ParamByName('Pquantidade').AsInteger   := uUtils.IIf(trim(edtQuantidade.Text) = '', 0, StrToInt(edtQuantidade.Text));
-    QryManutencao.ParamByName('PvlCusto').AsInteger      := uUtils.IIf(trim(edtValorDeCusto.Text) = '', 0, StrToInt(edtValorDeCusto.Text));
-    QryManutencao.ParamByName('PvlVenda').AsInteger      := uUtils.IIf(trim(edtValorDeVenda.Text) = '', 0, StrToInt(edtValorDeVenda.Text));
-    QryManutencao.ParamByName('PvlDesconto').AsInteger   := uUtils.IIf(trim(edtValorDeDesconto.Text) = '', 0, StrToInt(edtValorDeDesconto.Text));
-    QryManutencao.ParamByName('PvlTotalItem').AsInteger  := uUtils.IIf(trim(edtValorTotalDoItem.Text) = '', 0, StrToInt(edtValorTotalDoItem.Text));
+
+    if trim(edtQuantidade.Text) = '' then
+      QryManutencao.ParamByName('Pquantidade').AsInteger   := 0
+    else
+      QryManutencao.ParamByName('Pquantidade').AsInteger   := StrToInt(edtQuantidade.Text);
+
+    if trim(edtValorDeCusto.Text) = '' then
+      QryManutencao.ParamByName('PvlCusto').AsInteger      := 0
+    else
+      QryManutencao.ParamByName('PvlCusto').AsInteger      := StrToInt(edtValorDeCusto.Text);
+
+    if trim(edtValorDeVenda.Text) = '' then
+      QryManutencao.ParamByName('PvlVenda').AsInteger      := 0
+    else
+      QryManutencao.ParamByName('PvlVenda').AsInteger      := StrToInt(edtValorDeVenda.Text);
+
+    if trim(edtValorDeDesconto.Text) = '' then
+      QryManutencao.ParamByName('PvlDesconto').AsInteger   := 0
+    else
+      QryManutencao.ParamByName('PvlDesconto').AsInteger   := StrToInt(edtValorDeDesconto.Text);
+
+    if trim(edtValorTotalDoItem.Text) = '' then
+      QryManutencao.ParamByName('PvlTotalItem').AsInteger  := 0
+    else
+      QryManutencao.ParamByName('PvlTotalItem').AsInteger  := StrToInt(edtValorTotalDoItem.Text);
     QryManutencao.ParamByName('PidCompraItem').AsInteger := idCompraItem;
     QryManutencao.ExecSQL;
 

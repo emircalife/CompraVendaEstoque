@@ -2097,7 +2097,7 @@ object frmVenda: TfrmVenda
     SQL.Strings = (
       'SELECT  idstatusVenda,'
       '        nomeStatusVenda'
-      '  FROM estoque.statusVendas '
+      '  FROM statusVendas '
       '  ORDER BY nomeStatusVenda'
     )
     Params = <>
